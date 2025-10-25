@@ -9,6 +9,7 @@ import 'package:tharad_tech_task/core/utils/widgets/custom_button.dart';
 import 'package:tharad_tech_task/core/utils/widgets/custom_text_field.dart';
 
 import '../manager/register_form/register_form_cubit.dart';
+import '../widgets/have_account_text.dart';
 
 class RegisterView extends StatelessWidget {
   const RegisterView({super.key});
@@ -100,36 +101,23 @@ class RegisterView extends StatelessWidget {
 
                     const SizedBox(height: 30),
 
-                    // الزر
+                    //  التسجيل
                     CustomButton(
+                      gradientColors: [Color(0xff5CC7A3), Color(0xff265355)],
+
                       onPressed: () {
                         final valid = cubit.validateForm();
                         if (valid) {}
                       },
-                      btnText: "إنشاء الحساب",
+                      btnText: "إنشاء حساب جديد",
+                      txtStyle: Styles.textStyle16.copyWith(
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
                     ),
                     const SizedBox(height: 20),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          'لديك حساب بالفعل؟',
-                          style: TextStyle(fontSize: 14, color: Colors.black87),
-                        ),
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'تسجيل الدخول',
-                            style: TextStyle(
-                              color: kPrimaryColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                    Center(child: HaveAccountText(onLoginTap: () {})),
                     SizedBox(height: context.screenHeight * .05),
                   ],
                 ),
