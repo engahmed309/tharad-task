@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 part 'register_form_state.dart';
 
@@ -19,7 +22,33 @@ class RegisterFormCubit extends Cubit<RegisterFormState> {
   bool isPasswordVisible = false;
   bool isConfirmPasswordVisible = false;
 
-  // Toggle password visibility
+  File? selectedImage;
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> pickImage(ImageSource source) async {
+    try {
+      emit(RegisterFormImageLoading());
+
+      final pickedFile = await _picker.pickImage(
+        source: source,
+        imageQuality: 70,
+      );
+      if (pickedFile != null) {
+        selectedImage = File(pickedFile.path);
+        emit(RegisterFormImagePicked(selectedImage!));
+      } else {
+        emit(RegisterFormInitial());
+      }
+    } catch (e) {
+      emit(RegisterFormImageError("حدث خطأ أثناء اختيار الصورة"));
+    }
+  }
+
+  void clearImage() {
+    selectedImage = null;
+    emit(RegisterFormImageCleared());
+  }
+
   void togglePasswordVisibility() {
     isPasswordVisible = !isPasswordVisible;
     emit(RegisterFormPasswordVisibilityChanged());
@@ -30,7 +59,6 @@ class RegisterFormCubit extends Cubit<RegisterFormState> {
     emit(RegisterFormPasswordVisibilityChanged());
   }
 
-  // Validate all fields before submit
   bool validateForm() {
     if (formKey.currentState?.validate() ?? false) {
       emit(RegisterFormValid());
@@ -41,7 +69,6 @@ class RegisterFormCubit extends Cubit<RegisterFormState> {
     }
   }
 
-  // Validators
   String? validateName(String? value) {
     if (value == null || value.trim().isEmpty) return 'الاسم مطلوب';
     return null;
@@ -67,7 +94,6 @@ class RegisterFormCubit extends Cubit<RegisterFormState> {
 
   @override
   Future<void> close() {
-    // تنظيف الموارد لتجنب memory leaks
     nameController.dispose();
     emailController.dispose();
     passwordController.dispose();

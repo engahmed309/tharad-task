@@ -10,6 +10,8 @@ const String otpRoute = '/otp';
 
 //color
 const kPrimaryColor = Color(0xff42867B);
+const kEyeColor = Color(0xff265355);
+
 const kGreyBgColor = Color(0xffF4F7F6);
 const kTextColor = Color(0XFF0D1D1E);
 const kGreyTextColor = Color(0xff998C8C);

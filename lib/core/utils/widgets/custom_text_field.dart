@@ -23,8 +23,8 @@ class CustomTextField extends StatefulWidget {
     this.enabled = true,
     this.minLines = 1,
     this.maxLines = 1,
-    this.fillColor,
-    this.borderColor = kPrimaryColor,
+    this.fillColor = kGreyBgColor,
+    this.borderColor = kBorderColor,
     this.radius = 12,
     this.contentPadding = const EdgeInsets.symmetric(
       horizontal: 14,
@@ -116,7 +116,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         fillColor: widget.fillColor,
         hintText: widget.hint,
         hintStyle: TextStyle(
-          color: kGreyBgColor,
+          color: Colors.grey,
           fontSize: 12,
           fontWeight: FontWeight.w400,
           height: 1.33,
@@ -140,7 +140,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 onPressed: () => setState(() => _obscure = !_obscure),
                 icon: Icon(
                   _obscure ? Icons.visibility_off : Icons.visibility,
-                  color: widget.borderColor,
+                  color: kEyeColor,
                 ),
               )
             : widget.suffix ??
