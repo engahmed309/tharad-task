@@ -8,17 +8,18 @@ import 'package:tharad_tech_task/core/utils/styles.dart';
 import 'package:tharad_tech_task/core/utils/widgets/custom_button.dart';
 import 'package:tharad_tech_task/core/utils/widgets/custom_text_field.dart';
 
-import '../manager/register_form/register_form_cubit.dart';
+import '../manager/login_form/login_form_cubit.dart';
+import '../widgets/login/forget_pass_remmeber_me.dart';
 import '../widgets/register/have_account_text.dart';
 
-class RegisterView extends StatelessWidget {
-  const RegisterView({super.key});
+class LoginView extends StatelessWidget {
+  const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<RegisterFormCubit, RegisterFormState>(
+    return BlocBuilder<LoginFormCubit, LoginFormState>(
       builder: (context, state) {
-        final cubit = RegisterFormCubit.get(context);
+        final cubit = LoginFormCubit.get(context);
 
         return Scaffold(
           body: SafeArea(
@@ -30,45 +31,35 @@ class RegisterView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: context.screenHeight * .05),
+                    SizedBox(height: context.screenHeight * .1),
+
+                    // Logo
                     Center(child: Image.asset(AssetsData.logo)),
-                    SizedBox(height: context.screenHeight * .05),
+                    SizedBox(height: context.screenHeight * .1),
+
+                    // Title
                     Center(
-                      child: Text('إنشاء حساب جديد', style: Styles.textStyle24),
+                      child: Text('تسجيل الدخول', style: Styles.textStyle24),
                     ),
                     const SizedBox(height: 24),
 
-                    // الاسم
-                    Text("اسم المستخدم", style: Styles.textStyle10),
-                    Gaps.vGap6,
-                    CustomTextField(
-                      controller: cubit.nameController,
-                      hint: "أدخل اسم المستخدم",
-                      validator: cubit.validateName,
-                    ),
-                    const SizedBox(height: 15),
-
-                    // الإيميل
+                    // Email
                     Text("البريد الإلكتروني", style: Styles.textStyle10),
                     Gaps.vGap6,
                     CustomTextField(
                       controller: cubit.emailController,
-                      hint: "example@email.com",
                       validator: cubit.validateEmail,
                       keyboardType: TextInputType.emailAddress,
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 12),
 
-                    // كلمة المرور
+                    // Password
                     Text("كلمة المرور", style: Styles.textStyle10),
                     Gaps.vGap6,
                     CustomTextField(
                       controller: cubit.passwordController,
                       isPassword: !cubit.isPasswordVisible,
                       validator: cubit.validatePassword,
-                      suffixIcon: cubit.isPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
                       suffix: IconButton(
                         icon: Icon(
                           cubit.isPasswordVisible
@@ -79,53 +70,45 @@ class RegisterView extends StatelessWidget {
                         onPressed: cubit.togglePasswordVisibility,
                       ),
                     ),
-                    const SizedBox(height: 15),
+                    const SizedBox(height: 8),
 
-                    // تأكيد كلمة المرور
-                    Text("تأكيد كلمة المرور", style: Styles.textStyle10),
-                    Gaps.vGap6,
-                    CustomTextField(
-                      controller: cubit.confirmPasswordController,
-                      isPassword: !cubit.isConfirmPasswordVisible,
-                      validator: cubit.validateConfirmPassword,
-                      suffix: IconButton(
-                        icon: Icon(
-                          cubit.isConfirmPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: kPrimaryColor,
-                        ),
-                        onPressed: cubit.toggleConfirmPasswordVisibility,
-                      ),
-                    ),
+                    // Forgot password & Remember me
+                    ForgetPasswordRememberMe(cubit: cubit),
 
-                    const SizedBox(height: 30),
+                    SizedBox(height: 20),
 
-                    //  التسجيل
+                    // Login button
                     CustomButton(
-                      gradientColors: [Color(0xff5CC7A3), Color(0xff265355)],
-
+                      gradientColors: const [
+                        Color(0xff5CC7A3),
+                        Color(0xff265355),
+                      ],
                       onPressed: () {
                         final valid = cubit.validateForm();
-                        if (valid) {}
+                        if (valid) {
+                          // TODO: handle login API
+                        }
                       },
-                      btnText: "إنشاء حساب جديد",
+                      btnText: "تسجيل الدخول",
                       txtStyle: Styles.textStyle16.copyWith(
                         color: Colors.white,
-                        fontSize: 12,
+                        fontSize: 14,
                       ),
                     ),
-                    const SizedBox(height: 20),
 
+                    const SizedBox(height: 12),
+
+                    // Have account text
                     Center(
                       child: HaveAccountText(
-                        normalText: "لديك حساب بالفعل؟ ",
-                        actionText: "تسجيل الدخول",
+                        normalText: "ليس لديك حساب؟ ",
+                        actionText: "إنشاء حساب جديد",
                         onTap: () {
-                          Navigator.pushReplacementNamed(context, loginRoute);
+                          Navigator.pushReplacementNamed(context, initialRoute);
                         },
                       ),
                     ),
+
                     SizedBox(height: context.screenHeight * .05),
                   ],
                 ),

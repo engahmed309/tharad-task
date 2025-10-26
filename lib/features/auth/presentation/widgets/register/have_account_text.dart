@@ -4,28 +4,36 @@ import 'package:tharad_tech_task/core/utils/constants.dart';
 import 'package:tharad_tech_task/core/utils/styles.dart';
 
 class HaveAccountText extends StatelessWidget {
-  final VoidCallback onLoginTap;
-  const HaveAccountText({super.key, required this.onLoginTap});
+  final String normalText;
+  final String actionText;
+  final VoidCallback onTap;
+
+  const HaveAccountText({
+    super.key,
+    required this.normalText,
+    required this.actionText,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return RichText(
+      textAlign: TextAlign.center,
       text: TextSpan(
-        text: 'لديك حساب؟ ',
+        text: normalText,
         style: Styles.textStyle10.copyWith(fontSize: 12, color: kTextColor),
         children: [
           TextSpan(
-            text: 'تسجيل الدخول',
+            text: actionText,
             style: Styles.textStyle10.copyWith(
               fontSize: 12,
               color: kPrimaryColor,
               decoration: TextDecoration.underline,
             ),
-            recognizer: TapGestureRecognizer()..onTap = onLoginTap,
+            recognizer: TapGestureRecognizer()..onTap = onTap,
           ),
         ],
       ),
-      textAlign: TextAlign.center,
     );
   }
 }

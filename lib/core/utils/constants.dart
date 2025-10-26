@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // Routes
 const String initialRoute = '/';
+const String loginRoute = '/login';
 
 //
 
