@@ -51,7 +51,6 @@ class RegisterView extends StatelessWidget {
                     Gaps.vGap6,
                     CustomTextField(
                       controller: formCubit.nameController,
-                      hint: "أدخل اسم المستخدم",
                       validator: formCubit.validateName,
                     ),
                     const SizedBox(height: 15),
@@ -61,7 +60,6 @@ class RegisterView extends StatelessWidget {
                     Gaps.vGap6,
                     CustomTextField(
                       controller: formCubit.emailController,
-                      hint: "example@email.com",
                       validator: formCubit.validateEmail,
                       keyboardType: TextInputType.emailAddress,
                     ),
@@ -122,7 +120,11 @@ class RegisterView extends StatelessWidget {
                             ),
                           );
 
-                          Navigator.pushNamed(context, otpRoute);
+                          Navigator.pushNamed(
+                            context,
+                            otpRoute,
+                            arguments: state.response.data!.email!,
+                          );
                         }
                         if (state is RegisterApiFailed) {
                           ScaffoldMessenger.of(context).showSnackBar(

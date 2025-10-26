@@ -19,3 +19,8 @@ abstract class LoginRepo {
     required String password,
   });
 }
+
+// Otp repo
+abstract class OtpRepo {
+  Future<OtpResponse> verifyOtp({required String email, required String otp});
+}

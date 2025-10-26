@@ -9,6 +9,7 @@ import '../../../../../../core/utils/network/api/network_api.dart';
 import '../../../../../../core/utils/network/network_request.dart';
 import '../../../../../../core/utils/network/network_utils.dart';
 import '../models/login_model/login_model.dart';
+import '../models/otp_model.dart';
 import '../models/register_model/register_model.dart';
 
 typedef RegisterResponse = Either<String, RegisterModel>;
@@ -122,5 +123,47 @@ class LoginRemoteDataSourceImpl extends LoginRemoteDataSource {
     }
 
     return loginResponse;
+  }
+}
+
+// otp
+typedef OtpResponse = Either<String, OtpModel>;
+
+abstract class OtpRemoteDataSource {
+  Future<OtpResponse> verifyOtp({required String email, required String otp});
+}
+
+class OtpRemoteDataSourceImpl extends OtpRemoteDataSource {
+  @override
+  Future<OtpResponse> verifyOtp({
+    required String email,
+    required String otp,
+  }) async {
+    OtpResponse otpResponse = left("");
+
+    try {
+      final params = {"email": email, "otp": otp};
+
+      await getIt<NetworkRequest>().requestFutureData<OtpModel>(
+        Method.get,
+        url: Api.otp,
+        queryParams: params,
+        options: Options(contentType: 'application/json'),
+        onSuccess: (data) {
+          otpResponse = right(data);
+        },
+        onError: (code, msg) {
+          if (code == 400) {
+            otpResponse = left("$code Invalid OTP");
+          } else {
+            otpResponse = left("$msg ($code)");
+          }
+        },
+      );
+    } catch (e) {
+      otpResponse = left("Unexpected error: $e");
+    }
+
+    return otpResponse;
   }
 }

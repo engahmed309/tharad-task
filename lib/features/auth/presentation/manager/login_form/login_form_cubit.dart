@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hive/hive.dart';
+
+import '../../../../../core/utils/constants.dart';
 
 part 'login_form_state.dart';
 
@@ -9,8 +12,12 @@ class LoginFormCubit extends Cubit<LoginFormState> {
   static LoginFormCubit get(BuildContext context) => BlocProvider.of(context);
 
   // Controllers
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final emailController = TextEditingController(
+    text: Hive.box(kRememberEmailBox).get(kRememberEmailBox),
+  );
+  final passwordController = TextEditingController(
+    text: Hive.box(kRememberPasswordBox).get(kRememberPasswordBox),
+  );
 
   // Form Key
   final formKey = GlobalKey<FormState>();

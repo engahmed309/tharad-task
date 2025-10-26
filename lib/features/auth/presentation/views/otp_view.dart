@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:tharad_tech_task/core/utils/helper.dart';
+import 'package:tharad_tech_task/features/auth/presentation/manager/verify_otp_api/verify_otp_api_cubit.dart';
 
 import '../../../../core/utils/assets.dart';
 import '../../../../core/utils/constants.dart';
@@ -9,13 +11,13 @@ import '../../../../core/utils/widgets/custom_button.dart';
 import '../widgets/otp/otp_timer.dart';
 
 class OtpView extends StatelessWidget {
-  const OtpView({super.key});
-
+  const OtpView({super.key, required this.email});
+  final String email;
   @override
   Widget build(BuildContext context) {
+    String? enteredOtp;
     return Scaffold(
       backgroundColor: Colors.white,
-
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -77,7 +79,14 @@ class OtpView extends StatelessWidget {
                       ),
                       keyboardType: TextInputType.number,
                       enableActiveFill: true,
-                      onChanged: (value) {},
+
+                      onCompleted: (value) async {
+                        enteredOtp = value;
+                        await context.read<VerifyOtpApiCubit>().verifyOtp(
+                          email: email,
+                          otp: value,
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -90,14 +99,50 @@ class OtpView extends StatelessWidget {
                 const SizedBox(height: 40),
 
                 /// Continue Button
-                CustomButton(
-                  gradientColors: const [Color(0xff5CC7A3), Color(0xff265355)],
-                  onPressed: () {},
-                  btnText: "المتابعة",
-                  txtStyle: Styles.textStyle16.copyWith(
-                    color: Colors.white,
-                    fontSize: 14,
-                  ),
+                BlocConsumer<VerifyOtpApiCubit, VerifyOtpApiState>(
+                  listener: (context, state) {
+                    if (state is VerifyOtpApiSuccessful) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: kPrimaryColor,
+                          content: Text(state.response.message!),
+                        ),
+                      );
+                      Navigator.pushReplacementNamed(context, loginRoute);
+                    } else if (state is VerifyOtpApiFailed) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text(state.message),
+                        ),
+                      );
+                    }
+                  },
+                  builder: (context, state) {
+                    return state is VerifyOtpApiLoading
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              color: kPrimaryColor,
+                            ),
+                          )
+                        : CustomButton(
+                            gradientColors: const [
+                              Color(0xff5CC7A3),
+                              Color(0xff265355),
+                            ],
+                            onPressed: () async {
+                              await context.read<VerifyOtpApiCubit>().verifyOtp(
+                                email: email,
+                                otp: enteredOtp!,
+                              );
+                            },
+                            btnText: "المتابعة",
+                            txtStyle: Styles.textStyle16.copyWith(
+                              color: Colors.white,
+                              fontSize: 14,
+                            ),
+                          );
+                  },
                 ),
               ],
             ),

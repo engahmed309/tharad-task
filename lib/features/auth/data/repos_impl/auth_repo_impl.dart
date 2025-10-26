@@ -47,3 +47,20 @@ class LoginRepoImpl extends LoginRepo {
     return loginData;
   }
 }
+
+// otp repo
+
+class OtpRepoImpl extends OtpRepo {
+  final OtpRemoteDataSource otpRemoteDataSource;
+
+  OtpRepoImpl(this.otpRemoteDataSource);
+
+  @override
+  Future<OtpResponse> verifyOtp({
+    required String email,
+    required String otp,
+  }) async {
+    var otpData = await otpRemoteDataSource.verifyOtp(email: email, otp: otp);
+    return otpData;
+  }
+}

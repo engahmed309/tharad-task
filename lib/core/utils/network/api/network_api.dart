@@ -7,4 +7,5 @@ class Api {
   static const String baseUrl = "$mainAppUrl/api/";
   static const String login = "auth/login";
   static const String register = "auth/register";
+  static const String otp = "otp";
 }

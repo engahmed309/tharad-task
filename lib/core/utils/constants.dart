@@ -17,6 +17,8 @@ const kGreyTextColor = Color(0xff998C8C);
 const kBorderColor = Color(0xffF0E6DE);
 
 const kAccessTokenBox = 'access_token';
+const kRememberEmailBox = 'remember_email';
+const kRememberPasswordBox = 'remember_password';
 
 class AppConstant {
   static const String data = "data";

@@ -15,6 +15,8 @@ Future<void> main() async {
   // Hive.registerAdapter(CurrentUserEntityAdapter());
   // await Hive.openBox<CurrentUserEntity>(kCurrentUserBox);
   await Hive.openBox(kAccessTokenBox);
+  await Hive.openBox(kRememberEmailBox);
+  await Hive.openBox(kRememberPasswordBox);
 
   await di.init();
   Bloc.observer = SimpleBlocObserver();

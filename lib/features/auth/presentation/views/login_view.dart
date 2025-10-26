@@ -86,7 +86,24 @@ class LoginView extends StatelessWidget {
                         if (state is LoginApiSuccessful) {
                           Hive.box(
                             kAccessTokenBox,
-                          ).put("token", state.response.data!.token);
+                          ).put(kAccessTokenBox, state.response.data!.token);
+                          if (formCubit.rememberMe) {
+                            Hive.box(kRememberEmailBox).put(
+                              kRememberEmailBox,
+                              formCubit.emailController.text,
+                            );
+                            Hive.box(kRememberPasswordBox).put(
+                              kRememberPasswordBox,
+                              formCubit.passwordController.text,
+                            );
+                          } else {
+                            Hive.box(
+                              kRememberEmailBox,
+                            ).delete(kRememberEmailBox);
+                            Hive.box(
+                              kRememberPasswordBox,
+                            ).delete(kRememberPasswordBox);
+                          }
                         }
                         if (state is LoginApiFailed) {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -96,7 +113,11 @@ class LoginView extends StatelessWidget {
                             ),
                           );
                           if (state.message.startsWith("403")) {
-                            Navigator.pushNamed(context, otpRoute);
+                            Navigator.pushNamed(
+                              context,
+                              otpRoute,
+                              arguments: formCubit.emailController.text,
+                            );
                           }
                         }
                       },

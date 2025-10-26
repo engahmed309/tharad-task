@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-part 'otp_state.dart';
+part 'otp_timer_state.dart';
 
-class OtpCubit extends Cubit<OtpState> {
-  OtpCubit() : super(OtpInitial());
+class OtpTimerCubit extends Cubit<OtpTimerState> {
+  OtpTimerCubit() : super(OtpInitial());
 
   static const int _initialSeconds = 59;
   Timer? _timer;

@@ -53,7 +53,6 @@ class CustomTextField extends StatefulWidget {
   final Color borderColor;
   final double radius;
   final EdgeInsets contentPadding;
-
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
 }
