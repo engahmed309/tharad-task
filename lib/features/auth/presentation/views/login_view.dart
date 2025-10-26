@@ -166,7 +166,10 @@ class LoginView extends StatelessWidget {
                         normalText: "ليس لديك حساب؟ ",
                         actionText: "إنشاء حساب جديد",
                         onTap: () {
-                          Navigator.pushReplacementNamed(context, initialRoute);
+                          Navigator.pushReplacementNamed(
+                            context,
+                            registerRoute,
+                          );
                         },
                       ),
                     ),

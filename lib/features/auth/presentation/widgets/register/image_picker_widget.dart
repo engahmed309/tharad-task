@@ -13,8 +13,11 @@ import '../../manager/register_form/register_form_cubit.dart';
 import 'custom_paint_dashed_border.dart';
 
 class ImagePickerWidget extends StatelessWidget {
-  const ImagePickerWidget({super.key, this.imageUrl});
+  const ImagePickerWidget({super.key, this.imageUrl, this.cachedFile});
+
   final String? imageUrl;
+  final File? cachedFile;
+
   @override
   Widget build(BuildContext context) {
     final height = context.screenHeight * .13;
@@ -25,9 +28,7 @@ class ImagePickerWidget extends StatelessWidget {
         final localImage = cubit.selectedImage;
 
         return InkWell(
-          onTap: () {
-            _showImagePickerDialog(context);
-          },
+          onTap: () => _showImagePickerDialog(context),
           borderRadius: BorderRadius.circular(12),
           child: CustomPaint(
             painter: DashedBorderPainter(
@@ -42,7 +43,10 @@ class ImagePickerWidget extends StatelessWidget {
               height: height,
               width: double.infinity,
               alignment: Alignment.center,
-              child: (localImage == null && imageUrl == null)
+              child:
+                  (localImage == null &&
+                      cachedFile == null &&
+                      (imageUrl == null || imageUrl!.isEmpty))
                   ? Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -82,39 +86,18 @@ class ImagePickerWidget extends StatelessWidget {
                                   width: double.infinity,
                                   height: height,
                                 )
-                              : (imageUrl != null && imageUrl!.isNotEmpty)
-                              ? Image.network(
-                                  imageUrl!,
+                              : cachedFile != null
+                              ? Image.file(
+                                  cachedFile!,
                                   fit: BoxFit.cover,
                                   width: double.infinity,
                                   height: height,
                                 )
-                              : Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      AssetsData.camera,
-                                      color: kPrimaryColor,
-                                      height: 24,
-                                      width: 24,
-                                    ),
-                                    Gaps.vGap6,
-                                    Text(
-                                      "الملفات المسموح بيها : JPEG , PNG",
-                                      style: Styles.textStyle10.copyWith(
-                                        color: kGreyTextColor,
-                                        fontSize: 8,
-                                      ),
-                                    ),
-                                    Text(
-                                      "الحد الأقصى : 5MB",
-                                      style: Styles.textStyle10.copyWith(
-                                        color: kGreyTextColor,
-                                        fontSize: 6,
-                                      ),
-                                    ),
-                                  ],
+                              : Image.network(
+                                  imageUrl!,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: height,
                                 ),
                         ),
                         if (localImage != null)

@@ -14,10 +14,22 @@ Future<void> main() async {
 
   await Hive.initFlutter();
   Hive.registerAdapter(UserDataEntityAdapter());
-  await Hive.openBox<UserDataEntity>(kUserDataBox);
-  await Hive.openBox(kAccessTokenBox);
-  await Hive.openBox(kRememberEmailBox);
-  await Hive.openBox(kRememberPasswordBox);
+
+  if (!Hive.isBoxOpen(kUserDataBox)) {
+    await Hive.openBox<UserDataEntity>(kUserDataBox);
+  }
+
+  if (!Hive.isBoxOpen(kAccessTokenBox)) {
+    await Hive.openBox(kAccessTokenBox);
+  }
+
+  if (!Hive.isBoxOpen(kRememberEmailBox)) {
+    await Hive.openBox(kRememberEmailBox);
+  }
+
+  if (!Hive.isBoxOpen(kRememberPasswordBox)) {
+    await Hive.openBox(kRememberPasswordBox);
+  }
 
   await di.init();
   Bloc.observer = SimpleBlocObserver();

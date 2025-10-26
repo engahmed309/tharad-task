@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 // Routes
 const String initialRoute = '/';
+const String registerRoute = 'register';
+
 const String loginRoute = '/login';
 const String otpRoute = '/otp';
 const String profileRoute = '/profile';

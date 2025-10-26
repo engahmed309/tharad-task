@@ -10,16 +10,16 @@ class ProfileDetailsCubit extends Cubit<ProfileDetailsState> {
   ProfileDetailsCubit(this.profileUseCase) : super(ProfileDetailsInitial());
 
   final ProfileUseCase profileUseCase;
-  bool _hasLoaded = false;
+  bool hasLoaded = false;
 
   Future<void> getProfileData({required String token}) async {
-    if (_hasLoaded) return;
+    if (hasLoaded) return;
 
     emit(const ProfileDetailsLoading());
     final result = await profileUseCase.call(token: token);
     result.fold((failure) => emit(ProfileDetailsFailed(failure)), (data) {
       emit(ProfileDetailsSuccessful(data));
-      _hasLoaded = true;
+      hasLoaded = true;
     });
   }
 }

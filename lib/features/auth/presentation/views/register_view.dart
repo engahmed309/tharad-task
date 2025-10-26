@@ -24,7 +24,6 @@ class RegisterView extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: Colors.white,
-
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -41,7 +40,8 @@ class RegisterView extends StatelessWidget {
                       child: Text('إنشاء حساب جديد', style: Styles.textStyle24),
                     ),
                     const SizedBox(height: 24),
-                    // IMAGE
+
+                    // IMAGE PICKER
                     Text("الصورة الشخصية", style: Styles.textStyle10),
                     Gaps.vGap6,
                     ImagePickerWidget(),
@@ -72,9 +72,6 @@ class RegisterView extends StatelessWidget {
                       controller: formCubit.passwordController,
                       isPassword: !formCubit.isPasswordVisible,
                       validator: formCubit.validatePassword,
-                      suffixIcon: formCubit.isPasswordVisible
-                          ? Icons.visibility
-                          : Icons.visibility_off,
                       suffix: IconButton(
                         icon: Icon(
                           formCubit.isPasswordVisible
@@ -93,7 +90,12 @@ class RegisterView extends StatelessWidget {
                     CustomTextField(
                       controller: formCubit.confirmPasswordController,
                       isPassword: !formCubit.isConfirmPasswordVisible,
-                      validator: formCubit.validateConfirmPassword,
+                      validator: (val) {
+                        if (val != formCubit.passwordController.text) {
+                          return 'كلمتا المرور غير متطابقتين';
+                        }
+                        return null;
+                      },
                       suffix: IconButton(
                         icon: Icon(
                           formCubit.isConfirmPasswordVisible
@@ -104,10 +106,9 @@ class RegisterView extends StatelessWidget {
                         onPressed: formCubit.toggleConfirmPasswordVisibility,
                       ),
                     ),
-
                     const SizedBox(height: 30),
 
-                    //  التسجيل
+                    // زر التسجيل
                     BlocConsumer<RegisterApiCubit, RegisterApiState>(
                       listener: (context, state) {
                         if (state is RegisterApiSuccessful) {
@@ -115,11 +116,10 @@ class RegisterView extends StatelessWidget {
                             SnackBar(
                               backgroundColor: kPrimaryColor,
                               content: Text(
-                                state.response.message ?? "Success",
+                                state.response.message ?? "تم التسجيل بنجاح",
                               ),
                             ),
                           );
-
                           Navigator.pushNamed(
                             context,
                             otpRoute,
@@ -131,7 +131,7 @@ class RegisterView extends StatelessWidget {
                             SnackBar(
                               backgroundColor: Colors.red,
                               content: Text(
-                                "${state.message}The email has already been taken.",
+                                state.message ?? "حدث خطأ أثناء التسجيل",
                               ),
                             ),
                           );
@@ -139,20 +139,32 @@ class RegisterView extends StatelessWidget {
                       },
                       builder: (context, state) {
                         return state is RegisterApiLoading
-                            ? Center(
-                                child: const CircularProgressIndicator(
+                            ? const Center(
+                                child: CircularProgressIndicator(
                                   color: kPrimaryColor,
                                 ),
                               )
                             : CustomButton(
-                                gradientColors: [
+                                gradientColors: const [
                                   Color(0xff5CC7A3),
                                   Color(0xff265355),
                                 ],
-
                                 onPressed: () async {
-                                  final valid = formCubit.validateForm();
-                                  if (valid) {
+                                  if (formCubit.validateForm()) {
+                                    if (formCubit.selectedImage == null) {
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        const SnackBar(
+                                          content: Text(
+                                            "يرجى اختيار صورة شخصية",
+                                          ),
+                                          backgroundColor: Colors.red,
+                                        ),
+                                      );
+                                      return;
+                                    }
+
                                     await context
                                         .read<RegisterApiCubit>()
                                         .register(

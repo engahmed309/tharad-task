@@ -15,7 +15,7 @@ class EntityFactory {
       return RegisterModel.fromJson(json) as T;
     } else if (T.toString() == "LoginModel") {
       return LoginModel.fromJson(json) as T;
-    } else if (T.toString() == "OtpModel") {
+    } else if (T.toString() == "SimpleModel") {
       return SimpleModel.fromJson(json) as T;
     } else if (T.toString() == "ProfileDetailsModel") {
       return ProfileDetailsModel.fromJson(json) as T;

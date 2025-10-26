@@ -17,22 +17,18 @@ class RegisterFormCubit extends Cubit<RegisterFormState> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final oldPasswordController = TextEditingController();
-
   final confirmPasswordController = TextEditingController();
 
   bool isPasswordVisible = false;
-  bool isNewPasswordVisible = false;
-
   bool isConfirmPasswordVisible = false;
 
   File? selectedImage;
   final ImagePicker _picker = ImagePicker();
 
+  // IMAGE PICKER
   Future<void> pickImage(ImageSource source) async {
     try {
       emit(RegisterFormImageLoading());
-
       final pickedFile = await _picker.pickImage(
         source: source,
         imageQuality: 70,
@@ -41,7 +37,7 @@ class RegisterFormCubit extends Cubit<RegisterFormState> {
         selectedImage = File(pickedFile.path);
         emit(RegisterFormImagePicked(selectedImage!));
       } else {
-        emit(RegisterFormInitial());
+        emit(RegisterFormImageCleared());
       }
     } catch (e) {
       emit(RegisterFormImageError("حدث خطأ أثناء اختيار الصورة"));
@@ -53,13 +49,9 @@ class RegisterFormCubit extends Cubit<RegisterFormState> {
     emit(RegisterFormImageCleared());
   }
 
+  // PASSWORD VISIBILITY
   void togglePasswordVisibility() {
     isPasswordVisible = !isPasswordVisible;
-    emit(RegisterFormPasswordVisibilityChanged());
-  }
-
-  void toggleNewPasswordVisibility() {
-    isNewPasswordVisible = !isNewPasswordVisible;
     emit(RegisterFormPasswordVisibilityChanged());
   }
 
@@ -68,6 +60,7 @@ class RegisterFormCubit extends Cubit<RegisterFormState> {
     emit(RegisterFormPasswordVisibilityChanged());
   }
 
+  // FORM VALIDATION
   bool validateForm() {
     if (formKey.currentState?.validate() ?? false) {
       emit(RegisterFormValid());
@@ -78,8 +71,19 @@ class RegisterFormCubit extends Cubit<RegisterFormState> {
     }
   }
 
+  final oldPasswordController = TextEditingController();
+  final newPasswordController = TextEditingController();
+  bool isNewPasswordVisible = false;
+
+  void toggleNewPasswordVisibility() {
+    isNewPasswordVisible = !isNewPasswordVisible;
+    emit(RegisterFormPasswordVisibilityChanged());
+  }
+
+  // INDIVIDUAL FIELD VALIDATORS
   String? validateName(String? value) {
     if (value == null || value.trim().isEmpty) return 'الاسم مطلوب';
+    if (value.trim().length < 3) return 'الاسم يجب أن يكون 3 أحرف على الأقل';
     return null;
   }
 
@@ -92,12 +96,7 @@ class RegisterFormCubit extends Cubit<RegisterFormState> {
 
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) return 'كلمة المرور مطلوبة';
-    if (value.length < 6) return 'كلمة المرور قصيرة جدًا';
-    return null;
-  }
-
-  String? validateConfirmPassword(String? value) {
-    if (value != passwordController.text) return 'كلمتا المرور غير متطابقتين';
+    if (value.length < 8) return 'كلمة المرور يجب أن تكون 8 أحرف على الأقل';
     return null;
   }
 
