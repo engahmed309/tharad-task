@@ -11,3 +11,11 @@ abstract class RegisterRepo {
     required File image,
   });
 }
+
+// Login repo
+abstract class LoginRepo {
+  Future<LoginResponse> login({
+    required String email,
+    required String password,
+  });
+}

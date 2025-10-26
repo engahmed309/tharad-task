@@ -28,3 +28,22 @@ class RegisterRepoImpl extends RegisterRepo {
     return registerData;
   }
 }
+
+// Login
+class LoginRepoImpl extends LoginRepo {
+  final LoginRemoteDataSource loginRemoteDataSource;
+
+  LoginRepoImpl(this.loginRemoteDataSource);
+
+  @override
+  Future<LoginResponse> login({
+    required String email,
+    required String password,
+  }) async {
+    var loginData = await loginRemoteDataSource.login(
+      email: email,
+      password: password,
+    );
+    return loginData;
+  }
+}

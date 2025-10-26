@@ -1,3 +1,4 @@
+import '../../../features/auth/data/models/login_model/login_model.dart';
 import '../../../features/auth/data/models/register_model/register_model.dart';
 import 'base_response/general_response.dart';
 import 'net_response.dart';
@@ -10,6 +11,8 @@ class EntityFactory {
       return GeneralResponse.fromJson(json) as T;
     } else if (T.toString() == "RegisterModel") {
       return RegisterModel.fromJson(json) as T;
+    } else if (T.toString() == "LoginModel") {
+      return LoginModel.fromJson(json) as T;
     } else {
       return null;
     }

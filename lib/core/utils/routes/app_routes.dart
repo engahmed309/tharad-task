@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tharad_tech_task/features/auth/presentation/manager/login_api/login_api_cubit.dart';
 import 'package:tharad_tech_task/features/auth/presentation/views/otp_view.dart';
 
 import '../../../features/auth/presentation/manager/login_form/login_form_cubit.dart';
@@ -29,8 +30,11 @@ class AppRoutes {
 
       case loginRoute:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => LoginFormCubit(),
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (context) => LoginFormCubit()),
+              BlocProvider(create: (context) => getIt<LoginApiCubit>()),
+            ],
             child: const LoginView(),
           ),
         );

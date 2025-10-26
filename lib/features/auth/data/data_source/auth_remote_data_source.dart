@@ -8,6 +8,7 @@ import '../../../../../../core/utils/functions/setup_service_locator.dart';
 import '../../../../../../core/utils/network/api/network_api.dart';
 import '../../../../../../core/utils/network/network_request.dart';
 import '../../../../../../core/utils/network/network_utils.dart';
+import '../models/login_model/login_model.dart';
 import '../models/register_model/register_model.dart';
 
 typedef RegisterResponse = Either<String, RegisterModel>;
@@ -67,5 +68,59 @@ class RegisterRemoteDataSourceImpl extends RegisterRemoteDataSource {
     }
 
     return registerResponse;
+  }
+}
+// Login remote Data source
+
+typedef LoginResponse = Either<String, LoginModel>;
+
+abstract class LoginRemoteDataSource {
+  Future<LoginResponse> login({
+    required String email,
+    required String password,
+  });
+}
+
+class LoginRemoteDataSourceImpl extends LoginRemoteDataSource {
+  @override
+  Future<LoginResponse> login({
+    required String email,
+    required String password,
+  }) async {
+    LoginResponse loginResponse = left("");
+
+    try {
+      final formData = FormData.fromMap({"email": email, "password": password});
+
+      await getIt<NetworkRequest>().requestFutureData<LoginModel>(
+        Method.post,
+        url: Api.login,
+        formData: formData,
+        isFormData: true,
+        options: Options(contentType: 'multipart/form-data'),
+        onSuccess: (data) {
+          if (data.status == "success") {
+            loginResponse = right(data);
+          } else {
+            loginResponse = left(data.message ?? 'Unknown error');
+          }
+        },
+        onError: (code, msg) {
+          if (code == 403) {
+            loginResponse = left(
+              "$code Please verify your OTP before logging in.",
+            );
+          } else if (code == 401) {
+            loginResponse = left("$code Login failed. Invalid credentials.");
+          } else {
+            loginResponse = left("$msg ($code)");
+          }
+        },
+      );
+    } catch (e) {
+      loginResponse = left("Unexpected error: $e");
+    }
+
+    return loginResponse;
   }
 }
