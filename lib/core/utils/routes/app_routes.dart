@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tharad_tech_task/features/auth/presentation/manager/login_api/login_api_cubit.dart';
 import 'package:tharad_tech_task/features/auth/presentation/views/otp_view.dart';
+import 'package:tharad_tech_task/features/profile/presentation/views/profile_view.dart';
 
 import '../../../features/auth/presentation/manager/login_form/login_form_cubit.dart';
 import '../../../features/auth/presentation/manager/otp_timer_cubit/otp_timer_cubit.dart';
@@ -47,6 +48,14 @@ class AppRoutes {
               BlocProvider(create: (context) => getIt<VerifyOtpApiCubit>()),
             ],
             child: OtpView(email: args as String),
+          ),
+        );
+
+      case profileRoute:
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) => RegisterFormCubit(),
+            child: ProfileView(),
           ),
         );
       default:

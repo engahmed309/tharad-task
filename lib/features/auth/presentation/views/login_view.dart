@@ -104,6 +104,11 @@ class LoginView extends StatelessWidget {
                               kRememberPasswordBox,
                             ).delete(kRememberPasswordBox);
                           }
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            profileRoute,
+                            (route) => false,
+                          );
                         }
                         if (state is LoginApiFailed) {
                           ScaffoldMessenger.of(context).showSnackBar(

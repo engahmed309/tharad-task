@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 const String initialRoute = '/';
 const String loginRoute = '/login';
 const String otpRoute = '/otp';
+const String profileRoute = '/profile';
 
 //
 
@@ -15,6 +16,7 @@ const kGreyBgColor = Color(0xffF4F7F6);
 const kTextColor = Color(0XFF0D1D1E);
 const kGreyTextColor = Color(0xff998C8C);
 const kBorderColor = Color(0xffF0E6DE);
+const kRedColor = Color(0xffFF1020);
 
 const kAccessTokenBox = 'access_token';
 const kRememberEmailBox = 'remember_email';

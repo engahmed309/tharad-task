@@ -17,7 +17,7 @@ class ImagePickerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final height = context.screenHeight * .1;
+    final height = context.screenHeight * .13;
     final cubit = RegisterFormCubit.get(context);
 
     return BlocBuilder<RegisterFormCubit, RegisterFormState>(

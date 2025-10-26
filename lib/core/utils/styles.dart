@@ -20,7 +20,6 @@ abstract class Styles {
   static const textStyle16 = TextStyle(
     fontSize: 16,
     fontFamily: 'Tajawal',
-
     fontWeight: FontWeight.w500,
     color: kTextColor,
   );

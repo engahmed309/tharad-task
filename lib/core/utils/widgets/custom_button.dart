@@ -14,6 +14,7 @@ class CustomButton extends StatelessWidget {
     this.borderColor,
     this.hasIcon,
     this.iconWidget,
+    this.width,
   });
 
   final Function()? onPressed;
@@ -25,7 +26,7 @@ class CustomButton extends StatelessWidget {
   final Color? borderColor;
   final bool? hasIcon;
   final Widget? iconWidget;
-
+  final double? width;
   @override
   Widget build(BuildContext context) {
     final bool useGradient =
@@ -36,7 +37,7 @@ class CustomButton extends StatelessWidget {
       height: 55,
       child: FilledButton(
         style: FilledButton.styleFrom(
-          backgroundColor: Colors.transparent, // ✅ مهم عشان gradient يظهر
+          backgroundColor: Colors.transparent,
           padding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             side: BorderSide(color: borderColor ?? Colors.transparent),
@@ -48,15 +49,12 @@ class CustomButton extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
             gradient: useGradient
-                ? LinearGradient(
-                    colors: gradientColors!,
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  )
+                ? LinearGradient(colors: gradientColors!)
                 : null,
             color: useGradient ? null : (color ?? kPrimaryColor),
           ),
           child: Container(
+            width: width,
             alignment: Alignment.center,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

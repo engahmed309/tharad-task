@@ -17,6 +17,8 @@ class RegisterFormCubit extends Cubit<RegisterFormState> {
   final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final oldPasswordController = TextEditingController();
+
   final confirmPasswordController = TextEditingController();
 
   bool isPasswordVisible = false;
