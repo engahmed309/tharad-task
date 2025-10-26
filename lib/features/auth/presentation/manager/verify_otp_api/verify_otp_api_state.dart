@@ -13,7 +13,7 @@ class VerifyOtpApiLoading extends VerifyOtpApiState {
 }
 
 class VerifyOtpApiSuccessful extends VerifyOtpApiState {
-  final OtpModel response;
+  final SimpleModel response;
 
   const VerifyOtpApiSuccessful(this.response);
 }

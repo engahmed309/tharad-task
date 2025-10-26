@@ -6,7 +6,7 @@ abstract class UseCase<type> {
   Future<OtpResponse> call({required String email, required String otp});
 }
 
-class OtpUseCase extends UseCase<OtpModel> {
+class OtpUseCase extends UseCase<SimpleModel> {
   final OtpRepo otpRepo;
   OtpUseCase(this.otpRepo);
 

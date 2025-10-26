@@ -22,6 +22,8 @@ class RegisterFormCubit extends Cubit<RegisterFormState> {
   final confirmPasswordController = TextEditingController();
 
   bool isPasswordVisible = false;
+  bool isNewPasswordVisible = false;
+
   bool isConfirmPasswordVisible = false;
 
   File? selectedImage;
@@ -53,6 +55,11 @@ class RegisterFormCubit extends Cubit<RegisterFormState> {
 
   void togglePasswordVisibility() {
     isPasswordVisible = !isPasswordVisible;
+    emit(RegisterFormPasswordVisibilityChanged());
+  }
+
+  void toggleNewPasswordVisibility() {
+    isNewPasswordVisible = !isNewPasswordVisible;
     emit(RegisterFormPasswordVisibilityChanged());
   }
 

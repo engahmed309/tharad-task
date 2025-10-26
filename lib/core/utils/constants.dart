@@ -21,6 +21,7 @@ const kRedColor = Color(0xffFF1020);
 const kAccessTokenBox = 'access_token';
 const kRememberEmailBox = 'remember_email';
 const kRememberPasswordBox = 'remember_password';
+const kUserDataBox = 'user_data';
 
 class AppConstant {
   static const String data = "data";

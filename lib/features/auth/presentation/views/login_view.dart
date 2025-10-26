@@ -82,7 +82,7 @@ class LoginView extends StatelessWidget {
 
                     // Login button
                     BlocConsumer<LoginApiCubit, LoginApiState>(
-                      listener: (context, state) {
+                      listener: (context, state) async {
                         if (state is LoginApiSuccessful) {
                           Hive.box(
                             kAccessTokenBox,
@@ -104,6 +104,7 @@ class LoginView extends StatelessWidget {
                               kRememberPasswordBox,
                             ).delete(kRememberPasswordBox);
                           }
+
                           Navigator.pushNamedAndRemoveUntil(
                             context,
                             profileRoute,

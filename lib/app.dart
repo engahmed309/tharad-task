@@ -24,7 +24,6 @@ class TharadApp extends StatelessWidget {
       },
       theme: ThemeData(
         fontFamily: 'Tajawal',
-
         colorScheme: ColorScheme.fromSeed(
           seedColor: kPrimaryColor,
           primary: kPrimaryColor,

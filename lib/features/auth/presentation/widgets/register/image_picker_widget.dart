@@ -13,8 +13,8 @@ import '../../manager/register_form/register_form_cubit.dart';
 import 'custom_paint_dashed_border.dart';
 
 class ImagePickerWidget extends StatelessWidget {
-  const ImagePickerWidget({super.key});
-
+  const ImagePickerWidget({super.key, this.imageUrl});
+  final String? imageUrl;
   @override
   Widget build(BuildContext context) {
     final height = context.screenHeight * .13;
@@ -22,7 +22,7 @@ class ImagePickerWidget extends StatelessWidget {
 
     return BlocBuilder<RegisterFormCubit, RegisterFormState>(
       builder: (context, state) {
-        final image = cubit.selectedImage;
+        final localImage = cubit.selectedImage;
 
         return InkWell(
           onTap: () {
@@ -42,7 +42,7 @@ class ImagePickerWidget extends StatelessWidget {
               height: height,
               width: double.infinity,
               alignment: Alignment.center,
-              child: image == null
+              child: (localImage == null && imageUrl == null)
                   ? Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -75,17 +75,53 @@ class ImagePickerWidget extends StatelessWidget {
                       children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(12),
-                          child: Image.file(
-                            File(image.path),
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: height,
+                          child: localImage != null
+                              ? Image.file(
+                                  File(localImage.path),
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: height,
+                                )
+                              : (imageUrl != null && imageUrl!.isNotEmpty)
+                              ? Image.network(
+                                  imageUrl!,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: height,
+                                )
+                              : Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      AssetsData.camera,
+                                      color: kPrimaryColor,
+                                      height: 24,
+                                      width: 24,
+                                    ),
+                                    Gaps.vGap6,
+                                    Text(
+                                      "الملفات المسموح بيها : JPEG , PNG",
+                                      style: Styles.textStyle10.copyWith(
+                                        color: kGreyTextColor,
+                                        fontSize: 8,
+                                      ),
+                                    ),
+                                    Text(
+                                      "الحد الأقصى : 5MB",
+                                      style: Styles.textStyle10.copyWith(
+                                        color: kGreyTextColor,
+                                        fontSize: 6,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                        ),
+                        if (localImage != null)
+                          IconButton(
+                            onPressed: () => cubit.clearImage(),
+                            icon: const Icon(Icons.close, color: Colors.red),
                           ),
-                        ),
-                        IconButton(
-                          onPressed: () => cubit.clearImage(),
-                          icon: const Icon(Icons.close, color: Colors.red),
-                        ),
                       ],
                     ),
             ),

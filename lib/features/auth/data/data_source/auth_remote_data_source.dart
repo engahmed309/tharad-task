@@ -127,7 +127,7 @@ class LoginRemoteDataSourceImpl extends LoginRemoteDataSource {
 }
 
 // otp
-typedef OtpResponse = Either<String, OtpModel>;
+typedef OtpResponse = Either<String, SimpleModel>;
 
 abstract class OtpRemoteDataSource {
   Future<OtpResponse> verifyOtp({required String email, required String otp});
@@ -144,7 +144,7 @@ class OtpRemoteDataSourceImpl extends OtpRemoteDataSource {
     try {
       final params = {"email": email, "otp": otp};
 
-      await getIt<NetworkRequest>().requestFutureData<OtpModel>(
+      await getIt<NetworkRequest>().requestFutureData<SimpleModel>(
         Method.get,
         url: Api.otp,
         queryParams: params,
