@@ -22,6 +22,7 @@ class LoginView extends StatelessWidget {
         final cubit = LoginFormCubit.get(context);
 
         return Scaffold(
+          backgroundColor: Colors.white,
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20),

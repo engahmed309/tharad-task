@@ -21,6 +21,8 @@ class RegisterView extends StatelessWidget {
         final cubit = RegisterFormCubit.get(context);
 
         return Scaffold(
+          backgroundColor: Colors.white,
+
           body: SafeArea(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -106,6 +108,8 @@ class RegisterView extends StatelessWidget {
                       gradientColors: [Color(0xff5CC7A3), Color(0xff265355)],
 
                       onPressed: () {
+                        //for testing
+                        Navigator.pushNamed(context, otpRoute);
                         final valid = cubit.validateForm();
                         if (valid) {}
                       },

@@ -44,6 +44,7 @@ dependencies:
   sprintf: ^7.0.0
   flutter_localizations:
     sdk: flutter
+  pin_code_fields: ^8.0.1
 dev_dependencies:
   hive_generator:
   build_runner:
